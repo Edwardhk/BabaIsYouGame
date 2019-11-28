@@ -19,12 +19,8 @@
             _height = 40;
             _width = 40;
             _layer = layer;
-            _leftOffSet = x * _height;
-            _topOffSet = y * _width;
         }
 
-        public int LeftOffSet { get { return _leftOffSet; } }
-        public int TopOffSet { get { return _topOffSet; } }
         public int Width { get { return _width; } }
         public int Height { get { return _height; } }
         public Stack<string> Layer { get { return _layer; } }
@@ -49,6 +45,22 @@
             res.BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             return res;
+        }
+
+        public Image GetImage()
+        {
+            BitmapImage bitimg = new BitmapImage();
+            bitimg.BeginInit();
+            bitimg.UriSource = new Uri(@"../Assets/TileMap/" + _layer.Peek() + ".png", UriKind.RelativeOrAbsolute);
+            bitimg.EndInit();
+
+            Image img = new Image();
+            img.Stretch = Stretch.Fill;
+            img.Source = bitimg;
+            img.Width = 40;
+            img.Height = 40;
+
+            return img;
         }
     }
 }

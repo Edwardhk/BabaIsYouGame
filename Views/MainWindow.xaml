@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:BabaIsYouApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="1100" Width="1100">
-    <Grid>
-        <Canvas x:Name="canvasMain" HorizontalAlignment="Center"
-                Height="1000" Width="1000" Background="#000" 
-                Margin="0" Focusable="True"/>
+    <Grid x:Name="gridMain2" ShowGridLines="True">
+        <UniformGrid x:Name="gridMain" Background="#000" Margin="0"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Focusable="True" Loaded="FocusGrid">
+
+        </UniformGrid>
     </Grid>
 </Window>

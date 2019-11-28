@@ -32,5 +32,9 @@ namespace BabaIsYouApp.Views
             tm.UpdateViews();
             MainController mc = new MainController(gs, tm);
         }
+        private void FocusGrid(object sender, RoutedEventArgs e)
+        {
+            gridMain.Focus();
+        }
     }
 }

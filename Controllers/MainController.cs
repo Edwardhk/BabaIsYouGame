@@ -4,13 +4,14 @@
     using System.Windows.Input;
     using System.Windows.Controls;
     using System.Collections.Generic;
+    using System.Windows.Controls.Primitives;
 
     using BabaIsYouApp.Views;
     using BabaIsYouApp.Models;
 
     class MainController
     {
-        private Canvas _canvasMain;
+        private UniformGrid _gridMain;
         private GameStateModel _gameStateModel;
         private TileMapView _tileMapView;
         
@@ -19,14 +20,13 @@
         {
             _gameStateModel = gs;
             _tileMapView = tm;
-            _canvasMain = _tileMapView.GetWindow().canvasMain;
-            _canvasMain.KeyDown += new KeyEventHandler(HandleKeyboardInput);
+            _gridMain = _tileMapView.GetWindow().gridMain;
+            _gridMain.KeyDown += new KeyEventHandler(HandleKeyboardInput);
         }
 
         private void HandleKeyboardInput(object sender, KeyEventArgs e)
         {
             Console.WriteLine("HandleKeyboardInput()");
-            _canvasMain.Focus();
             if (e.Key >= Key.Left && e.Key <= Key.Down)
                 HandleMovement(e.Key);
             else if (e.Key == Key.U)
@@ -48,16 +48,23 @@
                 case Key.Left:
                     for (int i = 0; i < res.Count; i++)
                         target = Swap(target, res[i].Item1, res[i].Item2, res[i].Item1, res[i].Item2 - 1);
-                    _tileMapView.UpdateTileMap(target);
-                    _tileMapView.UpdateViews();
                     break;
                 case Key.Right:
+                    for (int i = 0; i < res.Count; i++)
+                        target = Swap(target, res[i].Item1, res[i].Item2, res[i].Item1, res[i].Item2 + 1);
                     break;
                 case Key.Up:
+                    for (int i = 0; i < res.Count; i++)
+                        target = Swap(target, res[i].Item1, res[i].Item2, res[i].Item1 - 1, res[i].Item2);
                     break;
                 case Key.Down:
+                    for (int i = 0; i < res.Count; i++)
+                        target = Swap(target, res[i].Item1, res[i].Item2, res[i].Item1 + 1, res[i].Item2);
                     break;
             }
+
+            _tileMapView.UpdateTileMap(target);
+            _tileMapView.UpdateViews();
         }
 
         private List<List<Stack<string>>> Swap(List<List<Stack<string>>> target, int srcRow, int srcCol,
@@ -67,8 +74,8 @@
 
             if (destRow < 0) destRow = 0;
             if (destCol < 0) destCol = 0;
-            if (destRow >= target.Count) destRow = target.Count;
-            if (destCol >= target[0].Count) destCol = target[0].Count;
+            if (destRow >= target.Count) destRow = target.Count - 1;
+            if (destCol >= target[0].Count) destCol = target[0].Count - 1;
 
             target[destRow][destCol].Push(target[srcRow][srcCol].Peek());
 

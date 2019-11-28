@@ -5,6 +5,9 @@
     using System.Windows.Controls;
     using System.Collections.Generic;
 
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+
     class TileMapView
     {
         private MainWindow _window = Application.Current.Windows[0] as MainWindow;
@@ -41,17 +44,18 @@
 
         public void UpdateViews()
         {
-            _window.canvasMain.Children.Clear();
+            _window.gridMain.Children.Clear();
+            _window.gridMain.Rows = _tileMap.Count;
+            _window.gridMain.Columns = _tileMap[0].Count;
             for (int i = 0; i < _tileMap.Count; i++)
             {
                 for (int j = 0; j < _tileMap[i].Count; j++)
                 {
                     TileView tile = _tileMap[i][j];
-                    Button btn = tile.GetButton();
-                    //Console.WriteLine(String._format("{0}\t(L{1}, T{2})", tile.Val, tile.LeftOffSet, tile.TopOffSet));
-                    Canvas.SetLeft(btn, tile.LeftOffSet);
-                    Canvas.SetTop(btn, tile.TopOffSet);
-                    _window.canvasMain.Children.Add(btn);
+                    Image tmpImg = tile.GetImage();
+                    Grid.SetRow(tmpImg, j);
+                    Grid.SetRow(tmpImg, i);
+                    _window.gridMain.Children.Add(tmpImg);
                 }
             }
         }
