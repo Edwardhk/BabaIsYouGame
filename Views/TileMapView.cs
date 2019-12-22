@@ -53,8 +53,8 @@
                 {
                     TileView tile = _tileMap[i][j];
                     Image tmpImg = tile.GetImage();
-                    Grid.SetRow(tmpImg, j);
                     Grid.SetRow(tmpImg, i);
+                    Grid.SetColumn(tmpImg, j);
                     _window.gridMain.Children.Add(tmpImg);
                 }
             }

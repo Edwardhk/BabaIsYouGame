@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -23,19 +24,24 @@
         public int Height { get { return _height; } }
         public Stack<string> Layer { get { return _layer; } }
 
-        // TODO: Set GetImage to Multiple layer return, thus creating layered tile
         public Image GetImage()
         {
-            BitmapImage bitimg = new BitmapImage();
-            bitimg.BeginInit();
-            bitimg.UriSource = new Uri(@"../Assets/TileMap/" + _layer.Peek() + ".png", UriKind.RelativeOrAbsolute);
-            bitimg.EndInit();
+            var group = new DrawingGroup();
+            List<string> layerStrs = new List<string>();
+
+            // Reverse the stack as the image stack from the bottom
+            while (_layer.GetEnumerator().MoveNext())
+                layerStrs.Add(_layer.GetEnumerator().Current);
+            layerStrs.Reverse();
+
+            foreach(string s in layerStrs)
+                group.Children.Add(new ImageDrawing(new BitmapImage(new Uri(@"../../Assets/TileMap/" + s + ".png", UriKind.RelativeOrAbsolute)), new Rect(0, 0, 40, 40)));
 
             Image img = new Image();
             img.Stretch = Stretch.Fill;
-            img.Source = bitimg;
-            img.Width = 40;
-            img.Height = 40;
+            img.Source = new DrawingImage(group);
+            img.Width = _width;
+            img.Height = _height;
 
             return img;
         }

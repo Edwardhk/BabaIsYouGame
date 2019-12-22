@@ -24,8 +24,6 @@
         private Dictionary<string, RuleBaseObject> _rulesDict;
         private string[] _rulePrefix, _ruleSuffix;
 
-        private KillRuleController _killRuleController;
-
         public MainController(GameStateModel gs, TileMapView tm)
         {
             // Model
@@ -34,7 +32,6 @@
             // Internal Controllers
             ResetRules();
             RecalculateRule();
-            _killRuleController = new KillRuleController(_gameStateModel);
 
             // Views
             _tileMapView = tm;

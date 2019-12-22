@@ -74,11 +74,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controllers\BaseRuleController.cs" />
     <Compile Include="Controllers\BaseRuleObject.cs" />
-    <Compile Include="Controllers\KillRuleController.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\PushRuleController.cs" />
     <Compile Include="Controllers\RuleController.cs" />
     <Compile Include="Models\BasePropsModel.cs" />
     <Compile Include="Models\GameStateModel.cs" />

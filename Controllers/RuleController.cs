@@ -13,7 +13,6 @@
         private Dictionary<string, RuleBaseObject> _rulesDict;
         private GameStateModel _gameStateModel;
         private string[] _rulePrefix, _ruleSuffix;
-        private PushRuleController prc;
 
         public RuleController(GameStateModel gs)
         {
