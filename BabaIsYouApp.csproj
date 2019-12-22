@@ -76,7 +76,6 @@
     </ApplicationDefinition>
     <Compile Include="Controllers\BaseRuleObject.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\RuleController.cs" />
     <Compile Include="Models\BasePropsModel.cs" />
     <Compile Include="Models\GameStateModel.cs" />
     <Compile Include="Views\TileView.cs" />

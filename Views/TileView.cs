@@ -28,10 +28,10 @@
         {
             var group = new DrawingGroup();
             List<string> layerStrs = new List<string>();
-
             // Reverse the stack as the image stack from the bottom
-            while (_layer.GetEnumerator().MoveNext())
-                layerStrs.Add(_layer.GetEnumerator().Current);
+            var enumerator = _layer.GetEnumerator();
+            while (enumerator.MoveNext())
+                layerStrs.Add(enumerator.Current);
             layerStrs.Reverse();
 
             foreach(string s in layerStrs)
