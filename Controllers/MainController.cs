@@ -145,10 +145,6 @@
                 }
             }
 
-
-            /// TESTING ///
-            _rulesDict["ROCK"].CanPush = true;
-            /// END TESTING ///
             return;
         }
 
@@ -293,6 +289,9 @@
                         }
                         break;
                 }
+
+                // As the checking is conducted backwards for character
+                potentialPushableXYs.Reverse();
 
                 if (thisBlockIsPushable)
                 {
