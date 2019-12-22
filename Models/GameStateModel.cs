@@ -4,7 +4,7 @@
     using System.IO;
     using System.Collections.Generic;
 
-    class GameStateModel
+    public class GameStateModel
     {
         private List<string[]> _currentState;
         private List<List<Stack<string>>> _gameState;
@@ -34,6 +34,9 @@
                 _gameState.Add(tmpList);
             }
         }
+
+        public int GetRow() { return _nrows; }
+        public int GetCol() { return _ncols; }
 
         public GameStateModel(GameStateModel copy)
         {
@@ -83,6 +86,8 @@
 
         public List<Tuple<int, int>> FindAll(string s)
         {
+            if(s != "T_IS")
+                s = s.Replace("T_", "");
             List<Tuple<int, int>> res = new List<Tuple<int, int>>();
 
             for (var i = 0; i < _gameState.Count; i++)

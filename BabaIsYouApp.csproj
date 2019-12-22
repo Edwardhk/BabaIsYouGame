@@ -74,7 +74,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\BaseRuleController.cs" />
+    <Compile Include="Controllers\BaseRuleObject.cs" />
+    <Compile Include="Controllers\KillRuleController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\PushRuleController.cs" />
+    <Compile Include="Controllers\RuleController.cs" />
     <Compile Include="Models\BasePropsModel.cs" />
     <Compile Include="Models\GameStateModel.cs" />
     <Compile Include="Views\TileView.cs" />
@@ -159,6 +164,33 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Levels\DEMO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TileMap\T_IS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TileMap\T_BABA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TileMap\T_YOU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TileMap\T_BLANK.png" />
+    <Resource Include="Assets\TileMap\T_KILL.png" />
+    <Resource Include="Assets\TileMap\T_MOUNT.png" />
+    <Resource Include="Assets\TileMap\T_PUSH.png" />
+    <Resource Include="Assets\TileMap\T_ROCK.png" />
+    <Resource Include="Assets\TileMap\T_TREE.png" />
+    <Resource Include="Assets\TileMap\T_WATER.png" />
+    <Resource Include="Assets\TileMap\T_WIN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TileMap\T_BALL.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Audio\LittleRoot.wav" />
+    <Resource Include="Assets\TileMap\T_STOP.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
