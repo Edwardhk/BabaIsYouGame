@@ -44,4 +44,62 @@ This is the 2D map of the `TileView`, the key methods will be `UpdateViews()`.
 
 It clears all the children of the grid and re-render the whole View for every movement.
 
+### Controller
+
+#### `BaseRuleObject.cs`  
+The fundentmental `RuleBaseObject` is implemented here. Similar to the model, basic game properties have been added here, for instance:
+
+- CanPush
+- CanControl
+- CanKill
+- CanWin
+- CanStop
+
+All the above entries will be initialized to `false` by default
+
+#### `MainController.cs`  
+Most of the game logics are implemented here, all rule should be recalculated for each movement of the player.  
+
+The flow of calculating the rule:  
+`ResetRules() > RecalculateRules()`
+
+In the `ResetRule`, list of prefix and suffix are defined:  
+
+```
+_rulePrefix {
+    "T_BABA", "T_BLANK", "T_BALL", "T_ROCK",
+    "T_TREE", "T_MOUNT", "T_WATER"
+};
+
+_ruleSuffix {
+    "T_WIN", "T_YOU", "T_KILL",
+    "T_PUSH", "T_STOP"
+};
+```
+
+Satifying any of the following structure can be considered `rule`:  
+```
+1. Horizontal rule (LR rule)
+[prefix] [IS] [suffix]
+
+2. Vertical rule (UD rule)
+[prefix]
+  [IS]
+[suffix]
+```
+
+By this setup, shape like these can be correctly executed:  
+```
+       [prefix]
+[prefix] [IS] [suffix]
+       [suffix]
+``` 
+
+All the rule will be stored inside `_rulesDict`, which is `Dictionary<string, RuleBaseObject>`, there are two types of key, for instance:
+
+`T_BABA`: The textbox rule object of BABA   
+`BABA`: The underlying object of BABA, i.e. the BABA
+
+<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/Keyexplain.png">
+
 
