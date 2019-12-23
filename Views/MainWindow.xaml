@@ -12,5 +12,8 @@
                      Focusable="True" Loaded="FocusGrid">
 
         </UniformGrid>
+        <Label x:Name="lbGUI" Width="380" Height="78" Foreground="Green" Background="White"
+               Content="Double Click to Switch Display Mode" FontSize="20" HorizontalContentAlignment="Center"
+                VerticalAlignment="Bottom" HorizontalAlignment="Right"></Label>
     </Grid>
 </Window>

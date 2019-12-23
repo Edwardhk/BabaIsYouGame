@@ -21,8 +21,7 @@
         private Stack<List<List<Stack<string>>>> _gameHistory;
 
         // -Controller- //
-        // Keep track of multiple properties, eg. T_BABA { _canWin: true, _canPush: false ... }
-        private Dictionary<string, RuleBaseObject> _rulesDict;
+        private Dictionary<string, RuleBaseObject> _rulesDict; // Keep track of multiple properties, eg. T_BABA { _canWin: true, _canPush: false ... }
         private string[] _rulePrefix, _ruleSuffix;
 
         public MainController(GameStateModel gs, ref TileMapView tm)
@@ -169,7 +168,9 @@
         {
             Console.WriteLine("HandleKeyboardInput()");
             if (e.Key >= Key.Left && e.Key <= Key.Down)
+            {
                 HandleMovement(e.Key);
+            }
             else if (e.Key == Key.U)
                 HandleUndoMove();
         }
@@ -386,5 +387,6 @@
             Console.WriteLine("WON");
             _tileMapView.UpdateWinningViews();
         }
+    
     }
 }

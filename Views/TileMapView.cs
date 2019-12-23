@@ -10,11 +10,15 @@
 
     class TileMapView
     {
+        private bool _isGUI;
+
         private MainWindow _window = Application.Current.Windows[0] as MainWindow;
 
         public List<List<TileView>> _tileMap;
         public TileMapView(List<List<Stack<string>>> gameState)
         {
+            _isGUI = true;
+
             _tileMap = new List<List<TileView>>();
             for (int i = 0; i < gameState.Count; i++)
             {
@@ -40,15 +44,36 @@
             _window.gridMain.Children.Clear();
             _window.gridMain.Rows = _tileMap.Count;
             _window.gridMain.Columns = _tileMap[0].Count;
+
             for (int i = 0; i < _tileMap.Count; i++)
             {
                 for (int j = 0; j < _tileMap[i].Count; j++)
                 {
+                    _window.gridMain.Focusable = true;
+                    _window.gridMain.Focus();
                     TileView tile = _tileMap[i][j];
-                    Image tmpImg = tile.GetImage();
-                    Grid.SetRow(tmpImg, i);
-                    Grid.SetColumn(tmpImg, j);
-                    _window.gridMain.Children.Add(tmpImg);
+                    Console.WriteLine("[DEBUG:VIEW] GUI MODE: " + (_isGUI));
+                    if (_isGUI)
+                    {
+                        Image tmpImg = tile.GetImage();
+                        Grid.SetRow(tmpImg, i);
+                        Grid.SetColumn(tmpImg, j);
+                        _window.gridMain.Children.Add(tmpImg);
+                    }
+                    else
+                    {
+                        Label tmpLb = tile.GetLabel();
+                        Grid.SetRow(tmpLb, i);
+                        Grid.SetColumn(tmpLb, j);
+                        _window.gridMain.Children.Add(tmpLb);
+                    }
+                    //else
+                    //{
+                    //    TextBox tmpLb = tile.GetTextBox();
+                    //    Grid.SetRow(tmpLb, i);
+                    //    Grid.SetColumn(tmpLb, j);
+                    //    _window.gridMain.Children.Add(tmpLb);
+                    //}
                 }
             }
         }
@@ -61,6 +86,12 @@
         public void UpdateWinningViews()
         {
 
+        }
+
+        public void SwitchGUIMode(object sender, RoutedEventArgs e)
+        {
+            _isGUI = !_isGUI;
+            _window.gridMain.Focus();
         }
     }
 }

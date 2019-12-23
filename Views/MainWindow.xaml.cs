@@ -15,7 +15,12 @@
         {
             InitializeComponent();
 
-            GameStateModel gs = new GameStateModel("../../Assets/Levels/L1.txt");
+            StartGame("L1");
+        }
+
+        private void StartGame(string level)
+        {
+            GameStateModel gs = new GameStateModel("../../Assets/Levels/" + level + ".txt");
             TileMapView tm = new TileMapView(gs.GetState());
             tm.UpdateViews();
             MainController mc = new MainController(gs, ref tm);
@@ -23,10 +28,14 @@
             SoundPlayer player = new SoundPlayer("../../Assets/Audio/LittleRoot.wav");
             player.Load();
             player.Play();
+
+            lbGUI.MouseDoubleClick += tm.SwitchGUIMode;
         }
+
         private void FocusGrid(object sender, RoutedEventArgs e)
         {
             gridMain.Focus();
         }
+
     }
 }
