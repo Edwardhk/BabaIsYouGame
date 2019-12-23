@@ -103,3 +103,56 @@ All the rule will be stored inside `_rulesDict`, which is `Dictionary<string, Ru
 <img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/Keyexplain.png">
 
 
+`MoveSrcToDest()` contains the evaulation of movement, the priority should be: 
+
+`WINNING > KILLING > PUSHING > STOPING`
+
+Once the orders have been defined, the rest of the checking should be straight forward  
+
+## Challenge
+
+<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/HofstadterLaw.png">
+
+I actually spent most of my debugging time on the C# language itself, being partiallly spoiled by Python, I `assume` too much on C# itself.
+
+For instance, I try to keep track of every game state for the undo function, therefore, I store every game state whenever the player moves and they are stored in:  
+`List<List<Stack<string>>>` is the structure that needed to be stored in a stack so that we can simply `Pop()` for every undo action.
+
+This is my original code that give me hours of debugging :
+```
+var res = _gameStateModel.GetState();
+_gameHistory.Push(res);
+```
+
+YES ...   
+When looking back, the mistake is quite obvious but I actually assume it is going to work, say this is the game state changes:
+```
+stateA -> stateB -> stateC
+
+// What I am expecting
+_gameHistory.Push(stateA);
+_gameHistory.Push(stateB);
+_gameHistory.Push(stateC);
+
+// So the result stack should look like
+
+stateC  (front)
+stateB
+stateA  (back)
+```
+
+After hour of debugging, I discovered that this is what the stack looks ( I still have little faith in my code so I am checking other connected functions for bugs )
+```
+stateC  (front)
+stateC
+stateC  (back)
+```
+
+
+It turns out that the following line only make the `_gameHistory` being `refer` the object itself, it is not saving the `copy` of object as I expected.  
+As in C++, the gameHistory should be in pointer type and more obvious and I have assumed that the language will do the deep copying for me.
+```
+_gameHistory.Push(res);
+```
+
+Therefore, I have implemented the `GetDeepCopy()` method and copy the whole object using iterations.
