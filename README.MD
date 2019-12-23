@@ -22,7 +22,7 @@ This is the main logic of game status, it can be initialized by reading `filenam
 The progress of the game will be saved in a multidimensional container
 `List<List<Stack<string>>>`
 
-<img src ="Assets/images/Stackexplain.png">
+<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/Stackexplain.png">
 
 The above graph has illustrated the basic design of the grid inside model
 
