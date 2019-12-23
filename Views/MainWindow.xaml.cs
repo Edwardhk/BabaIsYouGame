@@ -14,12 +14,12 @@
         public MainWindow()
         {
             InitializeComponent();
-
             StartGame("L1");
         }
 
         private void StartGame(string level)
         {
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
             GameStateModel gs = new GameStateModel("../../Assets/Levels/" + level + ".txt");
             TileMapView tm = new TileMapView(gs.GetState());
             tm.UpdateViews();
@@ -36,6 +36,5 @@
         {
             gridMain.Focus();
         }
-
     }
 }

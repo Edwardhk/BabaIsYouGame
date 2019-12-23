@@ -67,13 +67,6 @@
                         Grid.SetColumn(tmpLb, j);
                         _window.gridMain.Children.Add(tmpLb);
                     }
-                    //else
-                    //{
-                    //    TextBox tmpLb = tile.GetTextBox();
-                    //    Grid.SetRow(tmpLb, i);
-                    //    Grid.SetColumn(tmpLb, j);
-                    //    _window.gridMain.Children.Add(tmpLb);
-                    //}
                 }
             }
         }
@@ -91,7 +84,7 @@
         public void SwitchGUIMode(object sender, RoutedEventArgs e)
         {
             _isGUI = !_isGUI;
-            _window.gridMain.Focus();
+            UpdateViews();
         }
     }
 }
