@@ -115,8 +115,8 @@ Once the orders have been defined, the rest of the checking should be straight f
 
 I actually spent most of my debugging time on the C# language itself, being partiallly spoiled by Python, I `assume` too much on C# itself.
 
-For instance, I try to keep track of every game state for the undo function, therefore, I store every game state whenever the player moves and they are stored in:  
-`List<List<Stack<string>>>` is the structure that needed to be stored in a stack so that we can simply `Pop()` for every undo action.
+For instance, I try to keep track of every game state for the undo function, therefore, I store every game state whenever the player moves and they are stored in
+`List<List<Stack<string>>>`, so that we can simply `Pop()` for every undo action.
 
 This is my original code that give me hours of debugging :
 ```
