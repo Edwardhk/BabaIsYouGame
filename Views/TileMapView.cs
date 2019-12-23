@@ -30,16 +30,9 @@
 
         public MainWindow GetWindow() { return _window; }
 
-        public void UpdateTileMap(List<List<Stack<string>>> gameState)
+        public List<List<TileView>> GetTileMap()
         {
-            for (int i = 0; i < gameState.Count; i++)
-            {
-                for (int j = 0; j < gameState[i].Count; j++)
-                {
-                    TileView tmp = new TileView(gameState[i][j], j, i);
-                    _tileMap[i][j] = tmp;
-                }
-            }
+            return _tileMap;
         }
 
         public void UpdateViews()
@@ -60,16 +53,14 @@
             }
         }
 
-        public void Print()
+        public void UpdateKillingViews()
         {
-            for (int i = 0; i < _tileMap.Count; i++)
-            {
-                for (int j = 0; j < _tileMap[i].Count; j++)
-                {
-                    Console.Write(_tileMap[i][j].Layer.Peek() + " ");
-                }
-                Console.WriteLine();
-            }
+
+        }
+
+        public void UpdateWinningViews()
+        {
+
         }
     }
 }

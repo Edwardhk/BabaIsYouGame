@@ -18,16 +18,19 @@
 
         // -Model- //
         private GameStateModel _gameStateModel;
+        private Stack<List<List<Stack<string>>>> _gameHistory;
 
         // -Controller- //
         // Keep track of multiple properties, eg. T_BABA { _canWin: true, _canPush: false ... }
         private Dictionary<string, RuleBaseObject> _rulesDict;
         private string[] _rulePrefix, _ruleSuffix;
 
-        public MainController(GameStateModel gs, TileMapView tm)
+        public MainController(GameStateModel gs, ref TileMapView tm)
         {
             // Model
             _gameStateModel = gs;
+            _gameHistory = new Stack<List<List<Stack<string>>>>();
+            _gameHistory.Push(_gameStateModel.GetState());
 
             // Internal Controllers
             ResetRules();
@@ -176,31 +179,33 @@
             ResetRules();
             RecalculateRule();
             List<Tuple<int, int>> res = FindAllControllableXY();
-            List<List<Stack<string>>> target = _gameStateModel.GetState();
 
             for (int i = 0; i < res.Count; i++)
             {
                 int srcRow = res[i].Item1;
                 int srcCol = res[i].Item2;
                 if (key == Key.Left)
-                    target = MoveSrcToDest(target, srcRow, srcCol, srcRow, srcCol - 1, 'L');
+                    MoveSrcToDest(srcRow, srcCol, srcRow, srcCol - 1, 'L');
                 else if (key == Key.Right)
-                    target = MoveSrcToDest(target, srcRow, srcCol, srcRow, srcCol + 1, 'R');
+                    MoveSrcToDest(srcRow, srcCol, srcRow, srcCol + 1, 'R');
                 else if (key == Key.Up)
-                    target = MoveSrcToDest(target, srcRow, srcCol, srcRow - 1, srcCol, 'U');
+                    MoveSrcToDest(srcRow, srcCol, srcRow - 1, srcCol, 'U');
                 else if (key == Key.Down)
-                    target = MoveSrcToDest(target, srcRow, srcCol, srcRow + 1, srcCol, 'D');
+                    MoveSrcToDest(srcRow, srcCol, srcRow + 1, srcCol, 'D');
             }
 
-            _tileMapView.UpdateTileMap(target);
+            //string fiv = _gameStateModel.GetState()[11][5].Peek();
+            //string six = _gameStateModel.GetState()[11][6].Peek();
+            //string seven = _gameStateModel.GetState()[11][7].Peek();
+            //string eight = _gameStateModel.GetState()[11][8].Peek();
+            
+            //Console.WriteLine(string.Format("B4:5{0}\n6{1}\n7{2}\n8{3}", fiv, six, seven, eight));
             _tileMapView.UpdateViews();
         }
 
-        private List<List<Stack<string>>> MoveSrcToDest(List<List<Stack<string>>> target, int srcRow, int srcCol,
-                                            int destRow, int destCol, char dir)
+        private void MoveSrcToDest(int srcRow, int srcCol, int destRow, int destCol, char dir)
         {
-            List<List<Stack<string>>> res = target;
-
+            var res = _gameStateModel.GetState();
             // If movement leads to out-bound value, fix the movement to the bound
             if (destRow < 0) destRow = 0;
             if (destCol < 0) destCol = 0;
@@ -210,7 +215,7 @@
 
             // If stepping on same tile
             if (destRow == srcRow && destCol == srcCol)
-                return target;
+                return;
 
             //// Prevent duplicated layer
             //if(target[destRow][destCol].Peek() != target[srcRow][srcCol].Peek())
@@ -228,14 +233,13 @@
             else if (destRule.CanPush)
             {
                 bool thisBlockIsPushable = false;
-                List<Tuple<int, int>> potentialPushableXY = new List<Tuple<int, int>>();
                 List<Tuple<int, int, int, int>> potentialPushableXYs = new List<Tuple<int, int, int, int>>();
                 switch (dir)
                 {
                     case 'L':
                         for (int i = destCol; i >= 0; i--)
                         {
-                            string currentStep = target[destRow][i].Peek();
+                            string currentStep = res[destRow][i].Peek();
                             // Arrive the critical block that affecting the previous blocks's pushing logic
                             if (!_rulesDict[currentStep].CanPush)
                             {
@@ -247,9 +251,9 @@
                         }
                         break;
                     case 'R':
-                        for (int i = destCol; i < target.Count; i++)
+                        for (int i = destCol; i < res.Count; i++)
                         {
-                            string currentStep = target[destRow][i].Peek();
+                            string currentStep = res[destRow][i].Peek();
                             if (!_rulesDict[currentStep].CanPush)
                             {
                                 thisBlockIsPushable = !_rulesDict[currentStep].CanStop;
@@ -262,7 +266,7 @@
                     case 'U':
                         for (int i = destRow; i >= 0; i--)
                         {
-                            string currentStep = target[i][destCol].Peek();
+                            string currentStep = res[i][destCol].Peek();
                             if (!_rulesDict[currentStep].CanPush)
                             {
                                 thisBlockIsPushable = !_rulesDict[currentStep].CanStop;
@@ -273,9 +277,9 @@
                         }
                         break;
                     case 'D':
-                        for (int i = destRow; i < target.Count; i++)
+                        for (int i = destRow; i < res.Count; i++)
                         {
-                            string currentStep = target[i][destCol].Peek();
+                            string currentStep = res[i][destCol].Peek();
                             if (!_rulesDict[currentStep].CanPush)
                             {
                                 thisBlockIsPushable = !_rulesDict[currentStep].CanStop;
@@ -298,7 +302,7 @@
                         int srcY = tuple.Item2;
                         int destX = tuple.Item3;
                         int destY = tuple.Item4;
-                        Console.WriteLine("PUSH: " + target[srcX][srcY].Peek());
+                        Console.WriteLine("PUSH: " + res[srcX][srcY].Peek());
 
                         res[destX][destY].Push(res[srcX][srcY].Peek());
                         if (res[srcX][srcY].Count != 1)
@@ -310,13 +314,33 @@
                         res[srcRow][srcCol].Pop();
                 }
             }
-            else if(!destRule.CanStop)
+            else if (!destRule.CanStop)
             {
                 res[destRow][destCol].Push(res[srcRow][srcCol].Peek());
                 if (res[srcRow][srcCol].Count != 1)
                     res[srcRow][srcCol].Pop();
             }
 
+            var deepCopy = GetDeepCopy(res);
+
+            _gameHistory.Push(deepCopy);
+        }
+
+        private List<List<Stack<string>>> GetDeepCopy(List<List<Stack<string>>> input)
+        {
+            List<List<Stack<string>>> res = new List<List<Stack<string>>>();
+
+            foreach(var x in input)
+            {
+                List<Stack<string>> tmpList = new List<Stack<string>>();
+                foreach(var y in x)
+                {
+                    var arr = y.ToArray().Reverse();
+                    Stack<string> tmp = new Stack<string>(arr);
+                    tmpList.Add(tmp);
+                }
+                res.Add(tmpList);
+            }
             return res;
         }
 
@@ -324,15 +348,43 @@
         {
             Console.WriteLine("UNDO");
 
+            if (_gameHistory.Count <= 0)
+                return;
+            
+            _gameHistory.Pop();
+            var gameState = _gameStateModel.GetState();
+
+            for(int i=0; i<_gameHistory.Peek().Count; i++)
+            {
+                for(int j=0; j<_gameHistory.Peek()[i].Count; j++)
+                {
+                    Console.Write(_gameHistory.Peek()[i][j].Peek() + " ");
+                }
+                Console.WriteLine("");
+            }
+
+            for (int i = 0; i < _gameHistory.Peek().Count; i++)
+            {
+                for (int j = 0; j < _gameHistory.Peek()[i].Count; j++)
+                {
+                    var stackArr = _gameHistory.Peek()[i][j].ToArray().Reverse();
+                    gameState[i][j].Clear(); 
+                    foreach (var s in stackArr)
+                        gameState[i][j].Push(s);
+                }
+            }
+            _tileMapView.UpdateViews();
         }
         private void HandleKilling()
         {
             Console.WriteLine("KILLED");
+            _tileMapView.UpdateKillingViews();
 
         }
         private void HandleWinning()
         {
             Console.WriteLine("WON");
+            _tileMapView.UpdateWinningViews();
         }
     }
 }
