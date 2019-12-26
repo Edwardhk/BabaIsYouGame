@@ -194,14 +194,6 @@
                 else if (key == Key.Down)
                     MoveSrcToDest(srcRow, srcCol, srcRow + 1, srcCol, 'D');
             }
-
-            //string fiv = _gameStateModel.GetState()[11][5].Peek();
-            //string six = _gameStateModel.GetState()[11][6].Peek();
-            //string seven = _gameStateModel.GetState()[11][7].Peek();
-            //string eight = _gameStateModel.GetState()[11][8].Peek();
-            
-            //Console.WriteLine(string.Format("B4:5{0}\n6{1}\n7{2}\n8{3}", fiv, six, seven, eight));
-            _tileMapView.UpdateViews();
         }
 
         private void MoveSrcToDest(int srcRow, int srcCol, int destRow, int destCol, char dir)
@@ -226,10 +218,12 @@
             if (destRule.CanWin)
             {
                 HandleWinning();
+                return;
             }
             else if (destRule.CanKill)
             {
                 HandleKilling();
+                return;
             }
             else if (destRule.CanPush)
             {
@@ -322,6 +316,7 @@
                     res[srcRow][srcCol].Pop();
             }
 
+            _tileMapView.UpdateViews();
             var deepCopy = GetDeepCopy(res);
 
             _gameHistory.Push(deepCopy);
@@ -379,13 +374,13 @@
         private void HandleKilling()
         {
             Console.WriteLine("KILLED");
-            _tileMapView.UpdateKillingViews();
+            _tileMapView.UpdateKillingViews(FindAllControllableXY());
 
         }
         private void HandleWinning()
         {
             Console.WriteLine("WON");
-            _tileMapView.UpdateWinningViews();
+            _tileMapView.UpdateWinningViews(FindAllControllableXY());
         }
     
     }

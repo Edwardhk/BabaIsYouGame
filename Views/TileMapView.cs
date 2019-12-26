@@ -52,7 +52,6 @@
                     _window.gridMain.Focusable = true;
                     _window.gridMain.Focus();
                     TileView tile = _tileMap[i][j];
-                    Console.WriteLine("[DEBUG:VIEW] GUI MODE: " + (_isGUI));
                     if (_isGUI)
                     {
                         Image tmpImg = tile.GetImage();
@@ -71,14 +70,22 @@
             }
         }
 
-        public void UpdateKillingViews()
+        public void UpdateKillingViews(List<Tuple<int, int>> tuples)
         {
-
+            foreach (var tuple in tuples)
+            {
+                _tileMap[tuple.Item1][tuple.Item2].Layer.Push("T_KILL");
+            }
+            UpdateViews();
         }
 
-        public void UpdateWinningViews()
+        public void UpdateWinningViews(List<Tuple<int, int>> tuples)
         {
-
+            foreach(var tuple in tuples)
+            {
+                _tileMap[tuple.Item1][tuple.Item2].Layer.Push("T_WIN");
+            }
+            UpdateViews();
         }
 
         public void SwitchGUIMode(object sender, RoutedEventArgs e)
