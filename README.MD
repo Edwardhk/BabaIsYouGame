@@ -22,7 +22,7 @@ This is the main logic of game status, it can be initialized by reading `filenam
 The progress of the game will be saved in a multidimensional container
 `List<List<Stack<string>>>`
 
-<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/Stackexplain.png">
+<img src="https://github.com/Edwardhk/BabaIsYouGame/blob/master/Assets/Images/Stackexplain.png">
 
 The above graph has illustrated the basic design of the grid inside model
 
@@ -100,7 +100,7 @@ All the rule will be stored inside `_rulesDict`, which is `Dictionary<string, Ru
 `T_BABA`: The textbox rule object of BABA   
 `BABA`: The underlying object of BABA, i.e. the BABA
 
-<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/Keyexplain.png">
+<img src="https://github.com/Edwardhk/BabaIsYouGame/blob/master/Assets/Images/Keyexplain.png">
 
 
 `MoveSrcToDest()` contains the evaulation of movement, the priority should be: 
@@ -111,7 +111,7 @@ Once the orders have been defined, the rest of the checking should be straight f
 
 ## Challenge
 
-<img src="https://github.com/IECUHK/project-part-ii-huehue/blob/master/Assets/Images/HofstadterLaw.png">
+<img src="https://github.com/Edwardhk/BabaIsYouGame/blob/master/Assets/Images/HofstadterLaw.png">
 
 I actually spent most of my debugging time on the C# language itself, being partiallly spoiled by Python, I `assume` too much on C# itself.
 
